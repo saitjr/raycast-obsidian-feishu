@@ -39,7 +39,7 @@ export class Obsidian {
 
   async writeDailyNote(date: Moment, note: string) {
     const fileName = date.format('YYYY_MM_DD') + '.md'
-    const dailyNotePath = path.join(this.root, 'journals', fileName)
+    const dailyNotePath = path.join(this.getJournalsDir(), fileName)
     const isExist = await this.isFileEixst(dailyNotePath)
     if (!isExist) {
       await fs.promises.writeFile(dailyNotePath, '', "utf8");
@@ -49,6 +49,10 @@ export class Obsidian {
 
   getIFrameSnip(link: string): string {
     return `<div style="display:block; postion: absolute;left:0;top:0;width:100%;height:1200;"><iframe src="${link}" style="display:block; postion: absolute;left:0;top:0;width:100%;height:100%;" allow="fullscreen" border=0 frameborder=0></iframe></div>`
+  }
+
+  getJournalsDir() {
+    return path.join(this.root, 'journals')
   }
 
   private async isFileEixst(filepath: string): Promise<boolean> {

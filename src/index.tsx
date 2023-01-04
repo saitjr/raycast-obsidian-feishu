@@ -2,6 +2,7 @@ import { Form, ActionPanel, Action, showToast } from "@raycast/api";
 import { FeishuDoc } from "./drive";
 import { Obsidian } from "./obsidian";
 import { ECookieType, getObsidianRoot, today } from "./utils"
+import path from "path"
 
 type TValues = {
   title: string;
@@ -13,7 +14,7 @@ export default function Command() {
   async function handleSubmit(values: TValues) {
     console.log(values);
     showToast({ title: "Submitted form", message: "See logs for submitted values" });
-
+    
     const ob = new Obsidian(getObsidianRoot())
 
     let content = ''
@@ -24,8 +25,10 @@ export default function Command() {
 
     const originalDir = 'pages'
     const workingDir = '_working_on'
-    await ob.createFile(originalDir, `${values.title}.md`, [workingDir], content)
-    await ob.writeDailyNote(today(), `#ARTICLE [[${values.title}]]`)
+    const obFilePath = await ob.createFile(originalDir, `${values.title}.md`, [workingDir], content)
+    const journalDir = ob.getJournalsDir()
+    const fileRelativePath = path.relative(journalDir, obFilePath)
+    await ob.writeDailyNote(today(), `#ARTICLE [${values.title}](${fileRelativePath})`)
   }
 
   return (

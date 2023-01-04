@@ -1,4 +1,3 @@
-import { getCookie } from './getCookie';
 import { ECookieType, execCmd } from '../utils';
 
 export class Cookie {
@@ -12,14 +11,12 @@ export class Cookie {
   async getCookieMap(host: string): Promise<{ [key: string]: string } | undefined> {
     if (this.type === ECookieType.Chrome) {
       const uri = `https://${host}`
-      // return getCookie(uri);
-      // const cmd = `node '${__dirname}/assets/ChromeCookieWrapper.js ${uri}'`
-      const cmd = `node '/Users/tangjiarong/Documents/untitled folder/raycast-obsidian-feishu/src/cookie-reader/ChromeCookieWrapper.js' ${uri}`
+      const cmd = `python3 '${__dirname}/assets/ChromeCookieReader.py' ${uri}`
       const output = await execCmd(cmd)
       return JSON.parse(output)
     }
     if (this.type === ECookieType.Safari) {
-      const cmd = `python '${__dirname}/assets/BinaryCookieReader.py' ~/Library/Cookies/Cookies.binarycookies ${host}`
+      const cmd = `python3 '${__dirname}/assets/BinaryCookieReader.py' ~/Library/Cookies/Cookies.binarycookies ${host}`
       const output = await execCmd(cmd)
       return JSON.parse(output)
     }
