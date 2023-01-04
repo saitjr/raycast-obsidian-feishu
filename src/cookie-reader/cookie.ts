@@ -34,6 +34,3 @@ export class Cookie {
     return cookieArray.join(';')
   }
 }
-
-
-
