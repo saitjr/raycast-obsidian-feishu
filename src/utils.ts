@@ -1,4 +1,5 @@
 import { exec } from 'child_process';
+import moment, { Moment } from 'moment-timezone';
 
 export enum ECookieType {
   Chrome = 'chrome',
@@ -26,6 +27,10 @@ export function getConfigByType(type: ECookieType): TConfig {
   throw Error(`unsupport type = ${type}`)
 }
 
+export function getObsidianRoot(): string {
+  return '/Users/tangjiarong/Library/Mobile\ Documents/iCloud~is~workflow~my~workflows/Documents/logseq/'
+}
+
 export async function execCmd(cmd: string): Promise<string> {
   return new Promise((res, rej) => {
     exec(cmd, (error, stdout, _0) => {
@@ -36,4 +41,8 @@ export async function execCmd(cmd: string): Promise<string> {
       res(stdout);
     });
   });
+}
+
+export function today(): Moment {
+  return moment().tz('Asia/Shanghai');
 }

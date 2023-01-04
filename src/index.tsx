@@ -1,10 +1,12 @@
 import { Form, ActionPanel, Action, showToast } from "@raycast/api";
 import { FeishuDoc } from "./drive";
-import { ECookieType } from "./utils"
+import { Obsidian } from "./obsidian";
+import { ECookieType, getObsidianRoot, today } from "./utils"
 
 type TValues = {
   title: string;
-  cookieType: ECookieType
+  cookieType: ECookieType;
+  createFeishuDoc: boolean;
 };
 
 export default function Command() {
@@ -12,13 +14,18 @@ export default function Command() {
     console.log(values);
     showToast({ title: "Submitted form", message: "See logs for submitted values" });
 
-    console.log('23423423')
+    const ob = new Obsidian(getObsidianRoot())
 
-    const data = await new FeishuDoc(ECookieType.Chrome).find('test')
-    console.log(data)
+    let content = ''
+    if (values.createFeishuDoc) {
+      const feishuURL = await new FeishuDoc(values.cookieType).create(values.title)
+      content = ob.getIFrameSnip(feishuURL)
+    }
 
-
-    // await 
+    const originalDir = 'pages'
+    const workingDir = '_working_on'
+    await ob.createFile(originalDir, `${values.title}.md`, [workingDir], content)
+    await ob.writeDailyNote(today(), `#ARTICLE [[${values.title}]]`)
   }
 
   return (
@@ -33,7 +40,7 @@ export default function Command() {
       <Form.TextField id="title" title="Title" placeholder="Enter doc title" defaultValue="Untitled" />
       {/* <Form.Separator /> */}
       {/* <Form.DatePicker id="datepicker" title="Date picker" /> */}
-      {/* <Form.Checkbox id="checkbox" title="Checkbox" label="Checkbox Label" storeValue /> */}
+      <Form.Checkbox id="createFeishuDoc" title="Create Feishu Doc" label="Create Feishu Doc" storeValue />
       <Form.Dropdown id="cookieType" title="Cookie Type">
         <Form.Dropdown.Item value="chrome" title="Chrome" />
         <Form.Dropdown.Item value="safari" title="Safari" />

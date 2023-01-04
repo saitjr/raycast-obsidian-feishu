@@ -12,20 +12,17 @@
   "commands": [
     {
       "name": "index",
-      "title": "Submit Form",
+      "title": "Obsidian Page Create",
       "description": "Template for submitting a form",
       "mode": "view"
     }
   ],
   "dependencies": {
     "@raycast/api": "^1.45.2",
-    "aws-sdk": "^2.1012.0",
     "keychain": "^1.3.0",
-    "keytar": "^7.9.0",
-    "mock-aws-s3": "^4.0.2",
-    "nock": "^13.1.4",
+    "moment-timezone": "^0.5.40",
     "request": "^2.88.2",
-    "sqlite3": "^5.1.4"
+    "sqlite3": "https://github.com/tryghost/node-sqlite3/tarball/master"
   },
   "devDependencies": {
     "@types/node": "18.8.3",

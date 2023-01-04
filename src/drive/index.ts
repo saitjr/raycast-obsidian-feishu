@@ -1,8 +1,31 @@
 import { FeishuDocBase } from './base'
 
+export type TFindItem = {
+  token: string; // 'doxcnU8rekxAy8FuxWZnXkBHuhe',
+  type: number; // 22,
+  title: string; // '[UISC] TikTok Beta <em>Test</em>ing Program//众测线上化',
+  preview: string; // 'page and click &#34;Join Beta <em>Test</em> Program&#34;.  If users want to leave Beta <em>Test</em>, they  page, view and participate in the beta <em>test</em>',
+  owner_id: string; // '7002790163210305537',
+  open_time: number; // 1665383383,
+  edit_uid: string; // '7002790163210305537',
+  edit_time: number; // 1670835626,
+  edit_name: string; // '安映雪',
+  comment: string; // '',
+  author: string; // '安映雪',
+  create_uid: string; // '7002790163210305537',
+  is_external: false,
+  url: string; // 'https://bytedance.feishu.cn/docx/doxcnU8rekxAy8FuxWZnXkBHuhe',
+  subtype: string; // '0',
+  user_edit_time: number; // 0,
+  share_version: number; // 0,
+  wiki_infos: unknown, // null
+  owner_type: number; // 5,
+  container_type: number; // 5
+}
+
 export class FeishuDoc extends FeishuDocBase {
   
-  async create() {
+  async create(): Promise<string> {
     const host = this.getRefererHost()
     const url = `https://${host}/space/api/explorer/create/`
     const params = {
@@ -12,7 +35,7 @@ export class FeishuDoc extends FeishuDocBase {
     return res.data.url
   }
 
-  async find(query: string) {
+  async find(query: string): Promise<TFindItem[]> {
     const host = this.getRefererHost()
     const url = `https://${host}/space/api/search/refine_search/?query=${encodeURIComponent(query)}&offset=0&count=12&obj_types=2%2C3%2C8%2C11%2C12%2C15%2C22%2C0%2C111&owner_id=&chat_id=&group_id=&folder_tokens=&open_time=&file_type=&sort_rule=0&need_path=0&search_quick_access=false&source=web&config_source=0&container_type=1`
     const res = await this.get<any>(url)
@@ -27,7 +50,7 @@ export class FeishuDoc extends FeishuDocBase {
     return docs
   }
 
-  private sortByOriginalOrder(docs: any[], sortedTokens: string[]) {
+  private sortByOriginalOrder(docs: TFindItem[], sortedTokens: string[]) {
     const sorted = []
     for (const token of sortedTokens) {
       const doc = docs.find(d => d.token === token)
