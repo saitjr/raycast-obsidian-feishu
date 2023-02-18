@@ -1,13 +1,13 @@
-import { Form, ActionPanel, Action, showToast } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, open } from "@raycast/api";
 import { FeishuDoc } from "./drive";
 import { Obsidian } from "./obsidian";
 import { ECookieType, getObsidianRoot, today } from "./utils";
 import path from "path";
 
 type TValues = {
-  title: string;
+  // title: string;
   cookieType: ECookieType;
-  createFeishuDoc: boolean;
+  // createFeishuDoc: boolean;
 };
 
 export default function Command() {
@@ -15,20 +15,8 @@ export default function Command() {
     console.log(values);
     showToast({ title: "Submitted form", message: "See logs for submitted values" });
 
-    const ob = new Obsidian(getObsidianRoot());
-
-    let content = "";
-    if (values.createFeishuDoc) {
-      const feishuURL = await new FeishuDoc(values.cookieType).create("test");
-      content = ob.getIFrameSnip(feishuURL);
-    }
-
-    const originalDir = "pages";
-    const workingDir = "_working_on";
-    const obFilePath = await ob.createFile(originalDir, `${values.title}.md`, [workingDir], content);
-    const journalDir = ob.getJournalsDir();
-    const fileRelativePath = path.relative(journalDir, obFilePath);
-    await ob.writeDailyNote(today(), `#ARTICLE [${values.title}](${fileRelativePath})`);
+    const feishuURL = await new FeishuDoc(values.cookieType).create("");
+    open(feishuURL);
   }
 
   return (
@@ -40,10 +28,10 @@ export default function Command() {
       }
     >
       {/* <Form.Description text="This form showcases all available form elements." /> */}
-      <Form.TextField id="title" title="Title" placeholder="Enter doc title" defaultValue="Untitled" />
+      {/* <Form.TextField id="title" title="Title" placeholder="Enter doc title" defaultValue="Untitled" /> */}
       {/* <Form.Separator /> */}
       {/* <Form.DatePicker id="datepicker" title="Date picker" /> */}
-      <Form.Checkbox id="createFeishuDoc" title="Create Feishu Doc" label="Create Feishu Doc" storeValue />
+      {/* <Form.Checkbox id="createFeishuDoc" title="Create Feishu Doc" label="Create Feishu Doc" storeValue /> */}
       <Form.Dropdown id="cookieType" title="Cookie Type">
         <Form.Dropdown.Item value="chrome" title="Chrome" />
         <Form.Dropdown.Item value="safari" title="Safari" />
