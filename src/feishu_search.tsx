@@ -1,8 +1,6 @@
-import { Form, ActionPanel, Action, showToast, open, closeMainWindow, Toast, List } from "@raycast/api";
+import { ActionPanel, Action, List } from "@raycast/api";
 import { FeishuDoc, TFindItem } from "./drive";
-import { Obsidian } from "./obsidian";
-import { ECookieType, getObsidianRoot, today } from "./utils";
-import path from "path";
+import { ECookieType } from "./utils";
 import { useEffect, useState } from "react";
 
 interface State {
