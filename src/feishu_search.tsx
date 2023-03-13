@@ -30,7 +30,6 @@ function Actions(props: { item: TFindItem }) {
 }
 
 function StoryListItem(props: { item: TFindItem; index: number; search: string }) {
-  console.log(props.search);
   return (
     <List.Item
       icon={props.item.icon_path}

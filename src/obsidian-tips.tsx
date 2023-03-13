@@ -1,4 +1,4 @@
-import { Form, ActionPanel, Action, open, showToast, Toast } from "@raycast/api";
+import { Form, ActionPanel, Action, open, showToast, Toast, closeMainWindow, PopToRootType } from "@raycast/api";
 import { getObsidianRoot, isNull, today } from "./utils";
 import Reader from "./reader/index";
 import { Obsidian } from "./obsidian";
@@ -41,6 +41,7 @@ export default function Command() {
     await ob.writeDailyNote(today(), texts.join(" "));
 
     open("raycast://confetti");
+    closeMainWindow({ popToRootType: PopToRootType.Immediate });
   }
 
   useEffect(() => {

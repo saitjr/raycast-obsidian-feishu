@@ -1,4 +1,4 @@
-import { Form, ActionPanel, Action, open, showToast, Toast } from "@raycast/api";
+import { Form, ActionPanel, Action, open, showToast, Toast, closeMainWindow, PopToRootType } from "@raycast/api";
 import { getObsidianRoot, isNull, today } from "./utils";
 import { Obsidian } from "./obsidian";
 
@@ -24,6 +24,7 @@ export default function Command() {
     texts.push(form.content);
     const ob = new Obsidian(getObsidianRoot());
     await ob.writeDailyNote(today(), texts.join(" "));
+    closeMainWindow({ popToRootType: PopToRootType.Immediate });
   }
 
   return (
